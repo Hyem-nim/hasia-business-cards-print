@@ -50,38 +50,60 @@
             padding: 50px;
             display: inline-block;
             position: relative;
-            background: transparent;
+            background: #0d1117;
         }
 
-        /* 헤더 여백 확장 */
+        /* 헤더 여백 확장 - 헤더 높이 33px에 맞춤 */
         .bleed-header {
             position: absolute;
             top: 0;
-            left: -50px;
-            right: -50px;
-            height: 90px;
+            left: 0;
+            right: 0;
+            height: 83px; /* 50px(상단여백) + 33px(헤더) */
             background: #161b22;
+            z-index: 1;
+        }
+
+        /* 헤더-본문 구분선 */
+        .bleed-divider-top {
+            position: absolute;
+            top: 83px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: #30363d;
             z-index: 1;
         }
 
         /* 본문 여백 확장 */
         .bleed-body {
             position: absolute;
-            top: 90px;
-            left: -50px;
-            right: -50px;
-            bottom: 90px;
+            top: 85px;
+            left: 0;
+            right: 0;
+            bottom: 81px; /* 50px(하단여백) + 29px(푸터) + 2px(구분선) */
             background: #0d1117;
             z-index: 1;
         }
 
-        /* 푸터 여백 확장 */
+        /* 본문-푸터 구분선 */
+        .bleed-divider-bottom {
+            position: absolute;
+            bottom: 79px; /* 50px(하단여백) + 29px(푸터) */
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: #30363d;
+            z-index: 1;
+        }
+
+        /* 푸터 여백 확장 - 푸터 높이 29px에 맞춤 */
         .bleed-footer {
             position: absolute;
             bottom: 0;
-            left: -50px;
-            right: -50px;
-            height: 90px;
+            left: 0;
+            right: 0;
+            height: 79px; /* 50px(하단여백) + 29px(푸터) */
             background: #161b22;
             z-index: 1;
         }
@@ -271,7 +293,9 @@
                 <!-- 앞면 -->
                 <div class="card-with-bleed">
                     <div class="bleed-header"></div>
+                    <div class="bleed-divider-top"></div>
                     <div class="bleed-body"></div>
+                    <div class="bleed-divider-bottom"></div>
                     <div class="bleed-footer"></div>
                     <div class="card card-terminal">
                         <div class="term-header">bash - hyeman@HASIA:~</div>
@@ -305,7 +329,9 @@
                 <!-- 뒷면 -->
                 <div class="card-with-bleed">
                     <div class="bleed-header"></div>
+                    <div class="bleed-divider-top"></div>
                     <div class="bleed-body"></div>
+                    <div class="bleed-divider-bottom"></div>
                     <div class="bleed-footer"></div>
                     <div class="card card-terminal">
                         <div class="back-header"></div>
@@ -336,7 +362,9 @@
                 <!-- 앞면 -->
                 <div class="card-with-bleed">
                     <div class="bleed-header"></div>
+                    <div class="bleed-divider-top"></div>
                     <div class="bleed-body"></div>
+                    <div class="bleed-divider-bottom"></div>
                     <div class="bleed-footer"></div>
                     <div class="card card-terminal">
                         <div class="term-header">bash - lucas@HASIA:~</div>
@@ -370,7 +398,9 @@
                 <!-- 뒷면 -->
                 <div class="card-with-bleed">
                     <div class="bleed-header"></div>
+                    <div class="bleed-divider-top"></div>
                     <div class="bleed-body"></div>
+                    <div class="bleed-divider-bottom"></div>
                     <div class="bleed-footer"></div>
                     <div class="card card-terminal">
                         <div class="back-header"></div>
@@ -400,7 +430,9 @@
                 <!-- 앞면 -->
                 <div class="card-with-bleed">
                     <div class="bleed-header"></div>
+                    <div class="bleed-divider-top"></div>
                     <div class="bleed-body"></div>
+                    <div class="bleed-divider-bottom"></div>
                     <div class="bleed-footer"></div>
                     <div class="card card-terminal">
                         <div class="term-header">bash - leo@HASIA:~</div>
@@ -434,7 +466,9 @@
                 <!-- 뒷면 -->
                 <div class="card-with-bleed">
                     <div class="bleed-header"></div>
+                    <div class="bleed-divider-top"></div>
                     <div class="bleed-body"></div>
+                    <div class="bleed-divider-bottom"></div>
                     <div class="bleed-footer"></div>
                     <div class="card card-terminal">
                         <div class="back-header"></div>
