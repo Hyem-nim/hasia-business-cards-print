@@ -74,7 +74,7 @@
             top: 0;
             left: 0;
             right: 0;
-            height: calc(50px + 36px); /* 여백 + 헤더 높이(padding + border) */
+            height: 85px; /* 50px 여백 + 35px 실제 헤더 */
             background: #161b22;
             z-index: 1;
         }
@@ -82,7 +82,7 @@
         /* 헤더-본문 구분선 - 카드의 헤더 하단 border 위치와 일치 */
         .bleed-divider-top {
             position: absolute;
-            top: calc(50px + 36px - 2px); /* 헤더 끝에서 2px 위로 (border 위치) */
+            top: 85px; /* 헤더 바로 아래 */
             left: 0;
             right: 0;
             height: 2px;
@@ -93,10 +93,10 @@
         /* 본문 여백 확장 */
         .bleed-body {
             position: absolute;
-            top: calc(50px + 36px);
+            top: 87px;
             left: 0;
             right: 0;
-            bottom: calc(50px + 31px);
+            bottom: 82px;
             background: #0d1117;
             z-index: 1;
         }
@@ -104,7 +104,7 @@
         /* 본문-푸터 구분선 - 카드의 푸터 상단 border 위치와 일치 */
         .bleed-divider-bottom {
             position: absolute;
-            bottom: calc(50px + 31px - 2px); /* 푸터 시작에서 2px 위로 (border 위치) */
+            bottom: 80px; /* 푸터 바로 위 */
             left: 0;
             right: 0;
             height: 2px;
@@ -118,7 +118,7 @@
             bottom: 0;
             left: 0;
             right: 0;
-            height: calc(50px + 31px); /* 여백 + 푸터 높이(padding + border) */
+            height: 80px; /* 50px 여백 + 30px 실제 푸터 */
             background: #161b22;
             z-index: 1;
         }
