@@ -47,7 +47,7 @@
 
         /* 재단 여백이 있는 카드 래퍼 */
         .card-with-bleed {
-            padding: 30px;
+            padding: 50px;
             display: inline-block;
             position: relative;
             background: transparent;
@@ -57,9 +57,9 @@
         .bleed-header {
             position: absolute;
             top: 0;
-            left: 0;
-            right: 0;
-            height: 60px;
+            left: -50px;
+            right: -50px;
+            height: 90px;
             background: #161b22;
             z-index: 1;
         }
@@ -67,10 +67,10 @@
         /* 본문 여백 확장 */
         .bleed-body {
             position: absolute;
-            top: 60px;
-            left: 0;
-            right: 0;
-            bottom: 60px;
+            top: 90px;
+            left: -50px;
+            right: -50px;
+            bottom: 90px;
             background: #0d1117;
             z-index: 1;
         }
@@ -79,9 +79,9 @@
         .bleed-footer {
             position: absolute;
             bottom: 0;
-            left: 0;
-            right: 0;
-            height: 60px;
+            left: -50px;
+            right: -50px;
+            height: 90px;
             background: #161b22;
             z-index: 1;
         }
