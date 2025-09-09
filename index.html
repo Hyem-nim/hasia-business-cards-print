@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HASIA Business Cards - Print Ready</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'SF Mono', 'Monaco', 'Inconsolata', 'Fira Code', 'Courier New', monospace;
+            background: #0a0a0a;
+            padding: 50px;
+        }
+
+        /* 전체 컨테이너 */
+        .main-container {
+            max-width: 1600px;
+            margin: 0 auto;
+        }
+
+        /* 각 사람별 카드 세트 */
+        .person-section {
+            margin-bottom: 80px;
+        }
+
+        .person-title {
+            text-align: center;
+            color: #58a6ff;
+            font-size: 20px;
+            margin-bottom: 30px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        /* 카드 가로 배치 컨테이너 */
+        .cards-row {
+            display: flex;
+            gap: 60px;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* 재단 여백이 있는 카드 래퍼 */
+        .card-with-bleed {
+            padding: 30px;
+            background: #0d1117;
+            border-radius: 15px;
+            display: inline-block;
+        }
+
+        /* 카드 기본 스타일 */
+        .card {
+            width: 350px;
+            height: 600px;
+            border-radius: 12px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Terminal 스타일 카드 */
+        .card-terminal {
+            background: #0d1117;
+            color: #c9d1d9;
+            font-family: 'SF Mono', 'Monaco', 'Inconsolata', 'Fira Code', monospace;
+            padding: 0;
+        }
+
+        /* 헤더 */
+        .term-header {
+            background: #161b22;
+            border-bottom: 2px solid #30363d;
+            padding: 10px 15px;
+            color: #58a6ff;
+            font-size: 11px;
+            font-weight: 600;
+            border-radius: 12px 12px 0 0;
+        }
+
+        /* 바디 */
+        .term-body {
+            flex: 1;
+            padding: 25px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        /* 푸터 */
+        .term-footer {
+            background: #161b22;
+            border-top: 2px solid #30363d;
+            padding: 8px 15px;
+            font-size: 10px;
+            border-radius: 0 0 12px 12px;
+        }
+
+        /* 뒷면 카드 스타일 */
+        .back-header {
+            height: 33px;
+            background: #161b22;
+            border-bottom: 2px solid #30363d;
+            border-radius: 12px 12px 0 0;
+        }
+
+        .back-main {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .back-footer {
+            height: 29px;
+            background: #161b22;
+            border-top: 2px solid #30363d;
+            border-radius: 0 0 12px 12px;
+        }
+
+        /* 텍스트 스타일 */
+        .cmd-block {
+            margin-bottom: 20px;
+        }
+
+        .cmd {
+            color: #8b949e;
+            margin-bottom: 3px;
+        }
+
+        .cmd .prompt {
+            color: #3fb950;
+            font-weight: bold;
+        }
+
+        .cmd .user {
+            color: #58a6ff;
+        }
+
+        .cmd .path {
+            color: #79c0ff;
+        }
+
+        .output {
+            color: #c9d1d9;
+            line-height: 1.8;
+        }
+
+        /* ASCII 로고 */
+        .ascii-logo {
+            color: #3fb950;
+            font-size: 8px;
+            line-height: 1;
+            white-space: pre;
+            font-family: monospace;
+            margin: 15px 0;
+        }
+
+        /* 하이라이트 스타일 */
+        .name-highlight {
+            background: #ff6b6b;
+            color: #ffffff;
+            padding: 2px 4px;
+            font-weight: bold;
+        }
+
+        .title-highlight {
+            background: #00d9ff;
+            color: #000000;
+            padding: 2px 4px;
+            font-weight: bold;
+        }
+
+        .contact-highlight {
+            background: #484f58;
+            color: #ffffff;
+            padding: 2px 4px;
+        }
+
+        /* 코드 하이라이트 */
+        .code-keyword {
+            color: #79c0ff;
+        }
+
+        .code-class {
+            color: #7ee787;
+            font-weight: bold;
+        }
+
+        .code-function {
+            color: #d2a8ff;
+        }
+
+        .code-string {
+            color: #a5d6ff;
+        }
+
+        .code-error {
+            color: #ffa657;
+        }
+
+        .code-success {
+            color: #7ee787;
+        }
+
+        /* 인쇄 설정 */
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+            }
+            
+            .person-section {
+                page-break-after: always;
+            }
+            
+            .person-section:last-child {
+                page-break-after: auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="main-container">
+        
+        <!-- 이혜만 CEO -->
+        <div class="person-section">
+            <h2 class="person-title">Hyeman Lee - CEO</h2>
+            <div class="cards-row">
+                <!-- 앞면 -->
+                <div class="card-with-bleed">
+                    <div class="card card-terminal">
+                        <div class="term-header">bash - hyeman@HASIA:~</div>
+                        <div class="term-body">
+                            <div class="cmd-block">
+                                <div class="cmd"><span class="user">hyeman@HASIA</span>:<span class="path">~</span><span class="prompt">$ </span>cat .profile/ascii_logo.txt</div>
+                                <div class="ascii-logo">██╗  ██╗ █████╗ ███████╗██╗ █████╗ 
+██║  ██║██╔══██╗██╔════╝██║██╔══██╗
+███████║███████║███████╗██║███████║
+██╔══██║██╔══██║╚════██║██║██╔══██║
+██║  ██║██║  ██║███████║██║██║  ██║
+╚═╝  ╚═╝╚═╝  ╚═╝╚══════╝╚═╝╚═╝  ╚═╝</div>
+                            </div>
+                            <div class="cmd-block">
+                                <div class="cmd"><span class="user">hyeman@HASIA</span>:<span class="path">~</span><span class="prompt">$ </span>finger hyeman</div>
+                                <div class="output">Login: hyeman</div>
+                                <div class="output">Name: <span class="name-highlight">Hyeman Lee (이혜만)</span></div>
+                                <div class="output">Title: <span class="title-highlight">CEO @ HASIA Corporation</span></div>
+                                <div class="output">Mail: <span class="contact-highlight">hyeman@hasia.ai</span></div>
+                                <div class="output">Phone: <span class="contact-highlight">+82-10-9120-7914</span></div>
+                                <div class="output">Web: <span class="contact-highlight">https://hasia.ai</span></div>
+                                <div class="output">Office: <span class="contact-highlight">Wherever WiFi Connects</span></div>
+                            </div>
+                        </div>
+                        <div class="term-footer">
+                            <span class="user">hyeman@HASIA</span>:<span class="path">~</span><span class="prompt">$ </span>_
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 뒷면 -->
+                <div class="card-with-bleed">
+                    <div class="card card-terminal">
+                        <div class="back-header"></div>
+                        <div class="back-main">
+                            <pre style="text-align: left; font-size: 13px; line-height: 1.8;">
+<span class="code-keyword">try</span> {
+  <span class="code-function">disruptIndustry</span>();
+  <span class="code-function">redefineTheGame</span>();
+}
+<span class="code-keyword">catch</span> (<span class="code-error">failure</span>) {
+  <span class="code-function">pivot</span>();
+  <span class="code-function">tryAgain</span>();
+}
+<span class="code-keyword">finally</span> {
+  <span class="code-success">neverGiveUp</span>();
+}</pre>
+                        </div>
+                        <div class="back-footer"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 하상현 CPO -->
+        <div class="person-section">
+            <h2 class="person-title">Sanghyeon Ha - CPO</h2>
+            <div class="cards-row">
+                <!-- 앞면 -->
+                <div class="card-with-bleed">
+                    <div class="card card-terminal">
+                        <div class="term-header">bash - lucas@HASIA:~</div>
+                        <div class="term-body">
+                            <div class="cmd-block">
+                                <div class="cmd"><span class="user">lucas@HASIA</span>:<span class="path">~</span><span class="prompt">$ </span>cat .profile/ascii_logo.txt</div>
+                                <div class="ascii-logo">██╗  ██╗ █████╗ ███████╗██╗ █████╗ 
+██║  ██║██╔══██╗██╔════╝██║██╔══██╗
+███████║███████║███████╗██║███████║
+██╔══██║██╔══██║╚════██║██║██╔══██║
+██║  ██║██║  ██║███████║██║██║  ██║
+╚═╝  ╚═╝╚═╝  ╚═╝╚══════╝╚═╝╚═╝  ╚═╝</div>
+                            </div>
+                            <div class="cmd-block">
+                                <div class="cmd"><span class="user">lucas@HASIA</span>:<span class="path">~</span><span class="prompt">$ </span>finger lucas</div>
+                                <div class="output">Login: lucas</div>
+                                <div class="output">Name: <span class="name-highlight">Sanghyeon Ha (하상현)</span></div>
+                                <div class="output">Title: <span class="title-highlight">CPO @ HASIA Corporation</span></div>
+                                <div class="output">Mail: <span class="contact-highlight">lucas@hasia.ai</span></div>
+                                <div class="output">Phone: <span class="contact-highlight">+82-10-2435-3561</span></div>
+                                <div class="output">Web: <span class="contact-highlight">https://hasia.ai</span></div>
+                                <div class="output">Office: <span class="contact-highlight">Wherever WiFi Connects</span></div>
+                            </div>
+                        </div>
+                        <div class="term-footer">
+                            <span class="user">lucas@HASIA</span>:<span class="path">~</span><span class="prompt">$ </span>_
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 뒷면 -->
+                <div class="card-with-bleed">
+                    <div class="card card-terminal">
+                        <div class="back-header"></div>
+                        <div class="back-main">
+                            <pre style="text-align: left; font-size: 13px; line-height: 1.8;">
+<span class="code-keyword">const</span> <span class="code-class">productPhilosophy</span> = {
+  <span class="code-function">focus</span>: <span class="code-string">"User pain points"</span>,
+  <span class="code-function">method</span>: <span class="code-string">"AI-first approach"</span>,
+  <span class="code-function">speed</span>: <span class="code-string">"Ship daily"</span>,
+  <span class="code-function">belief</span>: <span class="code-string">"Nothing is impossible"</span>
+};
+
+<span class="code-keyword">function</span> <span class="code-function">deliver</span>() {
+  <span class="code-keyword">return</span> <span class="code-success">Promise</span>.<span class="code-function">resolve</span>();
+}</pre>
+                        </div>
+                        <div class="back-footer"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 김정용 COO -->
+        <div class="person-section">
+            <h2 class="person-title">Jungyong Kim - COO</h2>
+            <div class="cards-row">
+                <!-- 앞면 -->
+                <div class="card-with-bleed">
+                    <div class="card card-terminal">
+                        <div class="term-header">bash - leo@HASIA:~</div>
+                        <div class="term-body">
+                            <div class="cmd-block">
+                                <div class="cmd"><span class="user">leo@HASIA</span>:<span class="path">~</span><span class="prompt">$ </span>cat .profile/ascii_logo.txt</div>
+                                <div class="ascii-logo">██╗  ██╗ █████╗ ███████╗██╗ █████╗ 
+██║  ██║██╔══██╗██╔════╝██║██╔══██╗
+███████║███████║███████╗██║███████║
+██╔══██║██╔══██║╚════██║██║██╔══██║
+██║  ██║██║  ██║███████║██║██║  ██║
+╚═╝  ╚═╝╚═╝  ╚═╝╚══════╝╚═╝╚═╝  ╚═╝</div>
+                            </div>
+                            <div class="cmd-block">
+                                <div class="cmd"><span class="user">leo@HASIA</span>:<span class="path">~</span><span class="prompt">$ </span>finger leo</div>
+                                <div class="output">Login: leo</div>
+                                <div class="output">Name: <span class="name-highlight">Jungyong Kim (김정용)</span></div>
+                                <div class="output">Title: <span class="title-highlight">COO @ HASIA Corporation</span></div>
+                                <div class="output">Mail: <span class="contact-highlight">leo@hasia.ai</span></div>
+                                <div class="output">Phone: <span class="contact-highlight">+82-10-5630-3398</span></div>
+                                <div class="output">Web: <span class="contact-highlight">https://hasia.ai</span></div>
+                                <div class="output">Office: <span class="contact-highlight">Wherever WiFi Connects</span></div>
+                            </div>
+                        </div>
+                        <div class="term-footer">
+                            <span class="user">leo@HASIA</span>:<span class="path">~</span><span class="prompt">$ </span>_
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 뒷면 -->
+                <div class="card-with-bleed">
+                    <div class="card card-terminal">
+                        <div class="back-header"></div>
+                        <div class="back-main">
+                            <pre style="text-align: left; font-size: 13px; line-height: 1.8;">
+<span class="code-keyword">class</span> <span class="code-class">Operations</span> {
+  <span class="code-function">constructor</span>() {
+    <span class="code-keyword">this</span>.expertise = [
+      <span class="code-string">"Corporate Law (13y+)"</span>,
+      <span class="code-string">"Strategic Leadership"</span>,
+      <span class="code-string">"Business Architecture"</span>
+    ];
+  }
+  
+  <span class="code-function">execute</span>() {
+    <span class="code-keyword">return</span> <span class="code-string">"Legal → Strategy → Scale"</span>;
+  }
+}</pre>
+                        </div>
+                        <div class="back-footer"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</body>
+</html>

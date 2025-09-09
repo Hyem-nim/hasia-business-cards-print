@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Business Card - Print Version</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Courier New', 'Consolas', 'Monaco', monospace;
+            background: #f5f5f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .cards-container {
+            display: flex;
+            flex-direction: column;
+            gap: 80px; /* 카드 간 간격 증가 */
+        }
+
+        .cards-wrapper {
+            display: flex;
+            gap: 60px; /* 앞뒤 카드 간격 증가 */
+            align-items: center;
+        }
+
+        /* Horizontal Card Styles - 인쇄용 여백 증가 */
+        .card {
+            width: 600px;
+            height: 350px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            padding: 65px; /* 40px -> 65px로 증가 (62.5% 증가) */
+            position: relative;
+        }
+
+        /* 재단선 가이드 (인쇄 시에는 보이지 않지만 화면에서 확인용) */
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            right: 10px;
+            bottom: 10px;
+            border: 1px dashed rgba(255, 0, 0, 0.2);
+            pointer-events: none;
+            z-index: 1000;
+        }
+
+        /* Vertical Card Styles - 인쇄용 여백 증가 */
+        .card-vertical {
+            width: 350px;
+            height: 600px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            padding: 65px; /* 40px -> 65px로 증가 */
+            position: relative;
+        }
+
+        .card-vertical::before {
+            content: '';
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            right: 10px;
+            bottom: 10px;
+            border: 1px dashed rgba(255, 0, 0, 0.2);
+            pointer-events: none;
+            z-index: 1000;
+        }
+
+        /* Light Mode */
+        .card-front {
+            background: #ffffff;
+            border: 1px solid #e0e0e0;
+            color: #000000;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .card-back {
+            background: #ffffff;
+            border: 1px solid #e0e0e0;
+            color: #000000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        /* Cyberpunk Light Mode */
+        .card-front-cyber-light {
+            background: #ffffff;
+            border: 2px solid #ff00ff;
+            color: #000000;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            box-shadow: 0 0 20px rgba(255, 0, 255, 0.3);
+        }
+
+        .card-back-cyber-light {
+            background: #ffffff;
+            border: 2px solid #00ffff;
+            color: #000000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0.3);
+        }
+
+        .card-front-cyber-light .name-section h1 {
+            color: #ff00ff;  /* 마젠타 - 메인 이름 */
+        }
+
+        .card-front-cyber-light .name-section h2 {
+            color: #00ccff;  /* 청록 - 영문 이름 */
+        }
+
+        .card-front-cyber-light .name-section .title {
+            color: #ff6600;  /* 주황 - CEO */
+        }
+
+        .card-front-cyber-light .logo {
+            color: #0066ff;  /* 파랑 - 로고 */
+            text-shadow: 2px 2px 4px rgba(0, 102, 255, 0.3);
+        }
+
+        .card-front-cyber-light .contact-section div:nth-child(1) {
+            color: #cc00cc;  /* 보라 - 회사명 */
+        }
+
+        .card-front-cyber-light .contact-section div:nth-child(2),
+        .card-front-cyber-light .contact-section div:nth-child(3) {
+            color: #0099cc;  /* 청록 - 주소 */
+        }
+
+        .card-front-cyber-light .contact-section div:nth-child(4) {
+            color: #ff3366;  /* 핑크 - 전화번호 */
+        }
+
+        .card-front-cyber-light .contact-section div:nth-child(5) {
+            color: #00cc66;  /* 민트 - 이메일 */
+        }
+
+        .card-front-cyber-light .geek-joke {
+            color: #ff0066;  /* 핫핑크 - 404 농담 */
+        }
+
+        .card-back-cyber-light .back-content {
+            color: #ff00ff;  /* 마젠타 - 메인 텍스트 */
+            text-shadow: 2px 2px 4px rgba(255, 0, 255, 0.2);
+        }
+
+        .card-back-cyber-light .comment {
+            color: #0099ff;  /* 하늘색 - 코멘트 */
+        }
+
+        /* Dark Mode Styles */
+        .card-front-dark {
+            background: #1a1a1a;
+            border: 1px solid #333;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .card-back-dark {
+            background: #000000;
+            border: 1px solid #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        .card-front-dark .name-section h1 {
+            color: #00ff00;  /* 초록 - 메인 이름 */
+        }
+
+        .card-front-dark .name-section h2 {
+            color: #00ffff;  /* 청록 - 영문 이름 */
+        }
+
+        .card-front-dark .name-section .title {
+            color: #ff00ff;  /* 마젠타 - CEO */
+        }
+
+        .card-front-dark .logo {
+            color: #ffff00;  /* 노랑 - 로고 */
+        }
+
+        .card-front-dark .contact-section div:nth-child(1) {
+            color: #ff9900;  /* 주황 - 회사명 */
+        }
+
+        .card-front-dark .contact-section div:nth-child(2),
+        .card-front-dark .contact-section div:nth-child(3) {
+            color: #9999ff;  /* 연보라 - 주소 */
+        }
+
+        .card-front-dark .contact-section div:nth-child(4) {
+            color: #ff66cc;  /* 핑크 - 전화번호 */
+        }
+
+        .card-front-dark .contact-section div:nth-child(5) {
+            color: #66ffcc;  /* 민트 - 이메일 */
+        }
+
+        .card-front-dark .geek-joke {
+            color: #ff3333;  /* 빨강 - 404 농담 */
+        }
+
+        .card-back-dark .back-content {
+            color: #00ff00;  /* 초록 - 메인 텍스트 */
+        }
+
+        .card-back-dark .comment {
+            color: #ffaa00;  /* 주황 - 코멘트 */
+        }
+
+        /* Monochrome Dark Mode */
+        .card-front-mono {
+            background: #000000;
+            border: 1px solid #333;
+            color: #ffffff;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .card-back-mono {
+            background: #000000;
+            border: 1px solid #333;
+            color: #ffffff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        .card-front-mono .name-section h1,
+        .card-front-mono .name-section h2,
+        .card-front-mono .name-section .title,
+        .card-front-mono .logo,
+        .card-front-mono .contact-section,
+        .card-back-mono .back-content {
+            color: #ffffff;
+        }
+
+        .card-front-mono .geek-joke,
+        .card-back-mono .comment {
+            color: #cccccc;
+        }
+
+        /* Common Styles - 폰트 크기 조정 */
+        .top-section {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+
+        /* Vertical card adjustments */
+        .card-vertical .top-section {
+            flex-direction: column;
+            align-items: center;
+            gap: 25px; /* 간격 조정 */
+        }
+
+        .card-vertical .name-section {
+            text-align: center;
+        }
+
+        .card-vertical .contact-section {
+            text-align: center;
+        }
+
+        .name-section h1 {
+            font-size: 24px; /* 28px -> 24px로 축소 */
+            margin-bottom: 6px;
+            color: #000000;
+        }
+
+        .name-section h2 {
+            font-size: 17px; /* 20px -> 17px로 축소 */
+            color: #333333;
+        }
+        
+        .name-section .title {
+            font-size: 14px; /* 16px -> 14px로 축소 */
+            color: #666666;
+            margin-top: 3px;
+        }
+
+        .logo {
+            font-size: 32px; /* 38px -> 32px로 축소 */
+            font-weight: bold;
+            color: #000000;
+            letter-spacing: 2px;
+        }
+
+        .contact-section {
+            font-size: 12px; /* 14px -> 12px로 축소 */
+            line-height: 1.3;
+            color: #000000;
+        }
+
+        .contact-section div {
+            margin-bottom: 1px;
+        }
+
+        .contact-section .geek-joke {
+            font-size: 9px; /* 10px -> 9px로 축소 */
+            color: #666666;
+            margin-top: 6px;
+            font-style: italic;
+        }
+
+        .back-content {
+            font-size: 20px; /* 24px -> 20px로 축소 */
+            font-weight: bold;
+            letter-spacing: 1.5px;
+            line-height: 1.4;
+        }
+        
+        .back-content .comment {
+            font-size: 11px; /* 12px -> 11px로 축소 */
+            color: #666666;
+            margin-top: 15px;
+            font-style: italic;
+        }
+
+        .section-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin: 40px 0 20px 0;
+            text-align: center;
+            color: #333;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        /* 인쇄 안내 메시지 */
+        .print-notice {
+            background: #fff3cd;
+            border: 2px solid #ffc107;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 40px;
+            text-align: center;
+            color: #856404;
+        }
+
+        .print-notice h2 {
+            margin-bottom: 10px;
+            color: #ff0000;
+        }
+
+        .print-notice ul {
+            text-align: left;
+            max-width: 600px;
+            margin: 0 auto;
+            list-style-position: inside;
+        }
+
+        @media (max-width: 1280px) {
+            .cards-wrapper {
+                flex-direction: column;
+                gap: 40px;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .card {
+                width: 100%;
+                max-width: 500px;
+                height: 300px;
+                padding: 50px;
+            }
+
+            .card-vertical {
+                width: 100%;
+                max-width: 300px;
+                height: 500px;
+                padding: 40px;
+            }
+
+            .name-section h1 {
+                font-size: 22px;
+            }
+
+            .name-section h2 {
+                font-size: 16px;
+            }
+
+            .logo {
+                font-size: 26px;
+            }
+
+            .back-content {
+                font-size: 18px;
+            }
+        }
+
+        /* 인쇄 시 재단선 가이드 제거 */
+        @media print {
+            .card::before,
+            .card-vertical::before {
+                display: none;
+            }
+            
+            .print-notice {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="cards-container">
+        <!-- 인쇄 안내 -->
+        <div class="print-notice">
+            <h2>📌 인쇄용 버전 - 여백 증가됨</h2>
+            <ul>
+                <li>여백이 40px → 65px로 증가되었습니다 (재단 여유 25px)</li>
+                <li>빨간 점선은 재단 가이드라인입니다 (인쇄 시 나타나지 않음)</li>
+                <li>텍스트 크기가 약간 축소되어 여백 공간을 확보했습니다</li>
+                <li>인쇄소에 전달 시 "재단 여백 포함" 명시 필요</li>
+            </ul>
+        </div>
+
+        <!-- HORIZONTAL CARDS -->
+        <div class="section-title">Horizontal Cards</div>
+        
+        <!-- Light Mode Cards -->
+        <div class="cards-wrapper">
+            <div class="card card-front">
+                <div class="top-section">
+                    <div class="name-section">
+                        <h1>이혜만</h1>
+                        <h2>Hyeman Lee</h2>
+                        <div class="title">CEO</div>
+                    </div>
+                    <div class="logo">HASIA</div>
+                </div>
+                <div class="contact-section">
+                    <div>HASIA Corporation</div>
+                    <div>1101-1401, Yanghyun-Ro 220,</div>
+                    <div>Bundang-Gu, Seongnam-City, South Korea</div>
+                    <div>+82-10-9120-7914</div>
+                    <div>hyeman@hasia.ai</div>
+                    <div class="geek-joke">// 404: Social life not found</div>
+                </div>
+            </div>
+            
+            <div class="card card-back">
+                <div class="back-content">
+                    --dangerously-skip<br>-permissions
+                    <div class="comment">/* Trust me, I know what I'm doing */</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Cyberpunk Light Mode Cards -->
+        <div class="cards-wrapper">
+            <div class="card card-front-cyber-light">
+                <div class="top-section">
+                    <div class="name-section">
+                        <h1>이혜만</h1>
+                        <h2>Hyeman Lee</h2>
+                        <div class="title">CEO</div>
+                    </div>
+                    <div class="logo">HASIA</div>
+                </div>
+                <div class="contact-section">
+                    <div>HASIA Corporation</div>
+                    <div>1101-1401, Yanghyun-Ro 220,</div>
+                    <div>Bundang-Gu, Seongnam-City, South Korea</div>
+                    <div>+82-10-9120-7914</div>
+                    <div>hyeman@hasia.ai</div>
+                    <div class="geek-joke">// 404: Social life not found</div>
+                </div>
+            </div>
+            
+            <div class="card card-back-cyber-light">
+                <div class="back-content">
+                    --dangerously-skip<br>-permissions
+                    <div class="comment">/* Trust me, I know what I'm doing */</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Monochrome Dark Cards -->
+        <div class="cards-wrapper">
+            <div class="card card-front-mono">
+                <div class="top-section">
+                    <div class="name-section">
+                        <h1>이혜만</h1>
+                        <h2>Hyeman Lee</h2>
+                        <div class="title">CEO</div>
+                    </div>
+                    <div class="logo">HASIA</div>
+                </div>
+                <div class="contact-section">
+                    <div>HASIA Corporation</div>
+                    <div>1101-1401, Yanghyun-Ro 220,</div>
+                    <div>Bundang-Gu, Seongnam-City, South Korea</div>
+                    <div>+82-10-9120-7914</div>
+                    <div>hyeman@hasia.ai</div>
+                    <div class="geek-joke">// 404: Social life not found</div>
+                </div>
+            </div>
+            
+            <div class="card card-back-mono">
+                <div class="back-content">
+                    --dangerously-skip<br>-permissions
+                    <div class="comment">/* Trust me, I know what I'm doing */</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Cyberpunk Dark Mode Cards -->
+        <div class="cards-wrapper">
+            <div class="card card-front-dark">
+                <div class="top-section">
+                    <div class="name-section">
+                        <h1>이혜만</h1>
+                        <h2>Hyeman Lee</h2>
+                        <div class="title">CEO</div>
+                    </div>
+                    <div class="logo">HASIA</div>
+                </div>
+                <div class="contact-section">
+                    <div>HASIA Corporation</div>
+                    <div>1101-1401, Yanghyun-Ro 220,</div>
+                    <div>Bundang-Gu, Seongnam-City, South Korea</div>
+                    <div>+82-10-9120-7914</div>
+                    <div>hyeman@hasia.ai</div>
+                    <div class="geek-joke">// 404: Social life not found</div>
+                </div>
+            </div>
+            
+            <div class="card card-back-dark">
+                <div class="back-content">
+                    --dangerously-skip<br>-permissions
+                    <div class="comment">/* Trust me, I know what I'm doing */</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- VERTICAL CARDS -->
+        <div class="section-title">Vertical Cards</div>
+
+        <!-- Light Mode Vertical Cards -->
+        <div class="cards-wrapper">
+            <div class="card-vertical card-front">
+                <div class="top-section">
+                    <div class="logo">HASIA</div>
+                    <div class="name-section">
+                        <h1>이혜만</h1>
+                        <h2>Hyeman Lee</h2>
+                        <div class="title">CEO</div>
+                    </div>
+                </div>
+                <div class="contact-section">
+                    <div>HASIA Corporation</div>
+                    <div>1101-1401, Yanghyun-Ro 220,</div>
+                    <div>Bundang-Gu, Seongnam-City, South Korea</div>
+                    <div>+82-10-9120-7914</div>
+                    <div>hyeman@hasia.ai</div>
+                    <div class="geek-joke">// 404: Social life not found</div>
+                </div>
+            </div>
+            
+            <div class="card-vertical card-back">
+                <div class="back-content">
+                    --dangerously-skip<br>-permissions
+                    <div class="comment">/* Trust me, I know what I'm doing */</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Cyberpunk Light Mode Vertical Cards -->
+        <div class="cards-wrapper">
+            <div class="card-vertical card-front-cyber-light">
+                <div class="top-section">
+                    <div class="logo">HASIA</div>
+                    <div class="name-section">
+                        <h1>이혜만</h1>
+                        <h2>Hyeman Lee</h2>
+                        <div class="title">CEO</div>
+                    </div>
+                </div>
+                <div class="contact-section">
+                    <div>HASIA Corporation</div>
+                    <div>1101-1401, Yanghyun-Ro 220,</div>
+                    <div>Bundang-Gu, Seongnam-City, South Korea</div>
+                    <div>+82-10-9120-7914</div>
+                    <div>hyeman@hasia.ai</div>
+                    <div class="geek-joke">// 404: Social life not found</div>
+                </div>
+            </div>
+            
+            <div class="card-vertical card-back-cyber-light">
+                <div class="back-content">
+                    --dangerously-skip<br>-permissions
+                    <div class="comment">/* Trust me, I know what I'm doing */</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Monochrome Dark Vertical Cards -->
+        <div class="cards-wrapper">
+            <div class="card-vertical card-front-mono">
+                <div class="top-section">
+                    <div class="logo">HASIA</div>
+                    <div class="name-section">
+                        <h1>이혜만</h1>
+                        <h2>Hyeman Lee</h2>
+                        <div class="title">CEO</div>
+                    </div>
+                </div>
+                <div class="contact-section">
+                    <div>HASIA Corporation</div>
+                    <div>1101-1401, Yanghyun-Ro 220,</div>
+                    <div>Bundang-Gu, Seongnam-City, South Korea</div>
+                    <div>+82-10-9120-7914</div>
+                    <div>hyeman@hasia.ai</div>
+                    <div class="geek-joke">// 404: Social life not found</div>
+                </div>
+            </div>
+            
+            <div class="card-vertical card-back-mono">
+                <div class="back-content">
+                    --dangerously-skip<br>-permissions
+                    <div class="comment">/* Trust me, I know what I'm doing */</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Cyberpunk Dark Vertical Cards -->
+        <div class="cards-wrapper">
+            <div class="card-vertical card-front-dark">
+                <div class="top-section">
+                    <div class="logo">HASIA</div>
+                    <div class="name-section">
+                        <h1>이혜만</h1>
+                        <h2>Hyeman Lee</h2>
+                        <div class="title">CEO</div>
+                    </div>
+                </div>
+                <div class="contact-section">
+                    <div>HASIA Corporation</div>
+                    <div>1101-1401, Yanghyun-Ro 220,</div>
+                    <div>Bundang-Gu, Seongnam-City, South Korea</div>
+                    <div>+82-10-9120-7914</div>
+                    <div>hyeman@hasia.ai</div>
+                    <div class="geek-joke">// 404: Social life not found</div>
+                </div>
+            </div>
+            
+            <div class="card-vertical card-back-dark">
+                <div class="back-content">
+                    --dangerously-skip<br>-permissions
+                    <div class="comment">/* Trust me, I know what I'm doing */</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

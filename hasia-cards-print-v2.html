@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HASIA Business Cards - Print Version (인쇄용)</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'SF Mono', 'Monaco', 'Inconsolata', 'Fira Code', 'Courier New', monospace;
+            background: #f0f0f0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 40px;
+        }
+
+        /* 인쇄 안내 메시지 */
+        .print-notice {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #fff3cd;
+            border: 2px solid #ffc107;
+            border-radius: 8px;
+            padding: 15px 30px;
+            text-align: center;
+            color: #856404;
+            z-index: 1000;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        .print-notice h2 {
+            margin-bottom: 10px;
+            color: #ff0000;
+            font-size: 16px;
+        }
+
+        .print-notice ul {
+            text-align: left;
+            list-style-position: inside;
+            font-size: 12px;
+            margin-top: 10px;
+        }
+
+        .cards-container {
+            display: flex;
+            flex-direction: column;
+            gap: 80px;
+            margin-top: 120px;
+        }
+
+        /* 카드 재단 여백 래퍼 */
+        .card-with-bleed {
+            padding: 30px;
+            background: white;
+            border: 1px dashed #ff0000;
+            border-radius: 15px;
+            position: relative;
+            display: inline-block;
+        }
+
+        .card-with-bleed::after {
+            content: '재단선';
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            font-size: 10px;
+            color: #ff0000;
+            opacity: 0.5;
+        }
+
+        .cards-wrapper {
+            display: flex;
+            gap: 40px;
+            align-items: center;
+        }
+
+        .card {
+            width: 350px;
+            height: 600px;
+            border-radius: 12px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .vertical {
+            width: 350px;
+            height: 600px;
+        }
+
+        .section-title {
+            font-size: 24px;
+            font-weight: bold;
+            margin: 40px 0 20px 0;
+            text-align: center;
+            color: #58a6ff;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            text-shadow: 0 0 20px rgba(88, 166, 255, 0.3);
+        }
+
+        h3 {
+            text-align: center;
+            margin: 20px 0;
+            font-family: 'SF Mono', monospace;
+            color: #c9d1d9;
+        }
+
+        /* Card 21 - Hybrid Style */
+        .card-front-terminal-hybrid {
+            background: #0d1117;
+            color: #c9d1d9;
+            display: flex;
+            flex-direction: column;
+            font-family: 'SF Mono', 'Monaco', 'Inconsolata', 'Fira Code', monospace;
+            padding: 0;
+        }
+
+        .card-back-terminal-hybrid {
+            background: #0d1117;
+            color: #ffffff;
+            display: flex;
+            flex-direction: column;
+            font-family: 'SF Mono', 'Monaco', 'Inconsolata', 'Fira Code', monospace;
+            padding: 0;
+        }
+
+        .card-front-terminal-hybrid .term-header,
+        .card-front-terminal-sanghyun .term-header {
+            background: #161b22;
+            border-bottom: 2px solid #30363d;
+            padding: 10px 15px;
+            color: #58a6ff;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .card-front-terminal-hybrid .term-body,
+        .card-front-terminal-sanghyun .term-body {
+            flex: 1;
+            padding: 15px 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            text-align: left;
+            font-size: 11px;
+            line-height: 1.4;
+        }
+
+        .cmd-block {
+            margin-bottom: 12px;
+        }
+
+        .cmd {
+            color: #8b949e;
+            margin-bottom: 3px;
+        }
+
+        .cmd .prompt {
+            color: #3fb950;
+            font-weight: bold;
+        }
+
+        .cmd .user {
+            color: #58a6ff;
+        }
+
+        .cmd .path {
+            color: #79c0ff;
+        }
+
+        .output {
+            color: #c9d1d9;
+            margin-left: 0;
+            margin-bottom: 2px;
+        }
+
+        .ascii-accurate,
+        .ascii-sanghyun {
+            color: #3fb950;
+            font-size: 6px;
+            line-height: 1;
+            white-space: pre;
+            font-family: monospace;
+            margin-bottom: 12px;
+        }
+
+        /* Hybrid highlights using Card 20 colors */
+        .name-hybrid,
+        .name-sanghyun {
+            background: #ff6b6b;
+            color: #ffffff;
+            padding: 2px 4px;
+            font-weight: bold;
+            display: inline;
+        }
+
+        .title-hybrid,
+        .title-sanghyun {
+            background: #00d9ff;
+            color: #000000;
+            padding: 2px 4px;
+            font-weight: bold;
+            display: inline;
+        }
+
+        .contact-hybrid,
+        .contact-sanghyun {
+            background: #484f58;
+            color: #ffffff;
+            padding: 2px 4px;
+            display: inline;
+        }
+
+        .success {
+            color: #3fb950;
+        }
+
+        .term-footer {
+            background: #161b22;
+            border-top: 2px solid #30363d;
+            padding: 8px 15px;
+            font-size: 10px;
+        }
+
+        /* Back card styles */
+        .back-header-hybrid,
+        .back-header-sanghyun {
+            height: 33px;
+            background: #161b22;
+            border-bottom: 2px solid #30363d;
+        }
+
+        .back-main-hybrid,
+        .back-main-sanghyun {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 20px;
+        }
+
+        /* Colorful code syntax highlighting - VS Code terminal style */
+        .back-code-colorful,
+        .back-code-chef {
+            font-family: 'SF Mono', monospace;
+        }
+
+        .code-keyword {
+            color: #79c0ff;
+            font-weight: normal;
+        }
+
+        .code-class {
+            color: #7ee787;
+            font-weight: bold;
+        }
+
+        .code-function {
+            color: #d2a8ff;
+        }
+
+        .code-string {
+            color: #a5d6ff;
+        }
+
+        .code-error {
+            color: #ffa657;
+        }
+
+        .code-success {
+            color: #7ee787;
+        }
+
+        .back-footer-hybrid,
+        .back-footer-sanghyun {
+            height: 29px;
+            background: #161b22;
+            border-top: 2px solid #30363d;
+        }
+
+        /* Card 22 - Sanghyun Ha CPO Style */
+        .card-front-terminal-sanghyun {
+            background: #0d1117;
+            color: #c9d1d9;
+            display: flex;
+            flex-direction: column;
+            font-family: 'SF Mono', 'Monaco', 'Inconsolata', 'Fira Code', monospace;
+            padding: 0;
+        }
+
+        .card-back-terminal-sanghyun {
+            background: #0d1117;
+            color: #ffffff;
+            display: flex;
+            flex-direction: column;
+            font-family: 'SF Mono', 'Monaco', 'Inconsolata', 'Fira Code', monospace;
+            padding: 0;
+        }
+
+        /* 뒷면 코드 스타일 개선 */
+        .back-code-colorful pre,
+        .back-code-chef pre {
+            margin: 0;
+            padding: 0;
+            overflow-x: auto;
+            white-space: pre;
+        }
+
+        @media (max-width: 1280px) {
+            .cards-wrapper {
+                flex-direction: column;
+                gap: 30px;
+            }
+        }
+
+        /* 인쇄 시 재단선 제거 */
+        @media print {
+            .card-with-bleed {
+                border: none !important;
+            }
+            
+            .card-with-bleed::after {
+                display: none !important;
+            }
+            
+            .print-notice {
+                display: none;
+            }
+
+            body {
+                background: white;
+            }
+
+            .cards-container {
+                margin-top: 0;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .card {
+                width: 100%;
+                max-width: 320px;
+                height: 550px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 인쇄 안내 -->
+    <div class="print-notice">
+        <h2>📌 인쇄용 버전 - 재단 여백 추가</h2>
+        <ul>
+            <li>카드 외부에 30px 재단 여백 추가</li>
+            <li>빨간 점선이 재단선 (인쇄 시 잘림)</li>
+            <li>카드 내용은 원본과 100% 동일</li>
+            <li>흰색 배경 부분이 재단 여백</li>
+            <li>인쇄소에 "재단선 포함" 명시 필요</li>
+        </ul>
+    </div>
+
+    <div class="cards-container">
+        <div class="section-title">HASIA Terminal Business Cards</div>
+        
+        <!-- Card 21 New Vertical - Hyeman Lee CEO -->
+        <h3>Hyeman Lee - CEO (새 세로형)</h3>
+        <div class="cards-wrapper">
+            <div>
+                <h4 style="text-align: center; color: #8b949e; margin-bottom: 10px; font-size: 12px;">(앞면)</h4>
+                <div class="card-with-bleed">
+                <div class="card vertical card-front-terminal-hybrid" style="font-size: 13px;">
+                <div class="term-header" style="font-size: 12px;">bash - hyeman@HASIA:~</div>
+                
+                <div class="term-body" style="font-size: 13px; line-height: 1.6; padding: 25px;">
+                    <div class="cmd-block" style="margin-bottom: 20px;">
+                        <div class="cmd" style="font-size: 13px;"><span class="user">hyeman@HASIA</span>:<span class="path">~</span><span class="prompt">$ </span>cat .profile/ascii_logo.txt</div>
+                        <div class="ascii-accurate" style="font-size: 8px; margin: 15px 0;">██╗  ██╗ █████╗ ███████╗██╗ █████╗ 
+██║  ██║██╔══██╗██╔════╝██║██╔══██╗
+███████║███████║███████╗██║███████║
+██╔══██║██╔══██║╚════██║██║██╔══██║
+██║  ██║██║  ██║███████║██║██║  ██║
+╚═╝  ╚═╝╚═╝  ╚═╝╚══════╝╚═╝╚═╝  ╚═╝</div>
+                    </div>
+                    
+                    <div class="cmd-block" style="margin-bottom: 20px;">
+                        <div class="cmd" style="font-size: 13px;"><span class="user">hyeman@HASIA</span>:<span class="path">~</span><span class="prompt">$ </span>finger hyeman</div>
+                        <div class="output" style="font-size: 13px; line-height: 1.8;">Login: hyeman</div>
+                        <div class="output" style="font-size: 13px; line-height: 1.8;">Name: <span class="name-hybrid">Hyeman Lee (이혜만)</span></div>
+                        <div class="output" style="font-size: 13px; line-height: 1.8;">Title: <span class="title-hybrid">CEO @ HASIA Corporation</span></div>
+                        <div class="output" style="font-size: 13px; line-height: 1.8;">Mail: <span class="contact-hybrid">hyeman@hasia.ai</span></div>
+                        <div class="output" style="font-size: 13px; line-height: 1.8;">Phone: <span class="contact-hybrid">+82-10-9120-7914</span></div>
+                        <div class="output" style="font-size: 13px; line-height: 1.8;">Web: <span class="contact-hybrid">https://hasia.ai</span></div>
+                        <div class="output" style="font-size: 13px; line-height: 1.8;">Office: <span class="contact-hybrid">Wherever WiFi Connects</span></div>
+                    </div>
+                </div>
+                
+                <div class="term-footer" style="font-size: 11px;">
+                    <span class="user">hyeman@HASIA</span>:<span class="path">~</span><span class="prompt">$ </span><span class="cursor">_</span>
+                </div>
+            </div>
+            </div>
+            </div>
+            
+            <div>
+                <h4 style="text-align: center; color: #8b949e; margin-bottom: 10px; font-size: 12px;">(뒷면)</h4>
+                <div class="card-with-bleed">
+                <div class="card vertical card-back-terminal-hybrid">
+                <div class="back-header-hybrid"></div>
+                
+                <div class="back-main-hybrid">
+                    <div style="text-align: center; width: 100%; overflow-x: auto;">
+                        <div class="back-code-colorful">
+                            <pre style="text-align: left; display: inline-block; font-size: 13px; line-height: 1.8; max-width: 100%; margin: 0 auto;">
+<span class="code-keyword">try</span> {
+  <span class="code-function">disruptIndustry</span>();
+  <span class="code-function">redefineTheGame</span>();
+}
+<span class="code-keyword">catch</span> (<span class="code-error">failure</span>) {
+  <span class="code-function">pivot</span>();
+  <span class="code-function">tryAgain</span>();
+}
+<span class="code-keyword">finally</span> {
+  <span class="code-success">neverGiveUp</span>();
+}</pre>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="back-footer-hybrid"></div>
+            </div>
+            </div>
+            </div>
+        </div>
+
+        <!-- Card 22 New Vertical - Sanghyeon Ha CPO -->
+        <h3>Sanghyeon Ha - CPO (새 세로형)</h3>
+        <div class="cards-wrapper">
+            <div>
+                <h4 style="text-align: center; color: #8b949e; margin-bottom: 10px; font-size: 12px;">(앞면)</h4>
+                <div class="card-with-bleed">
+                <div class="card vertical card-front-terminal-sanghyun" style="font-size: 13px;">
+                <div class="term-header" style="font-size: 12px;">bash - lucas@HASIA:~</div>
+                
+                <div class="term-body" style="font-size: 13px; line-height: 1.6; padding: 25px;">
+                    <div class="cmd-block" style="margin-bottom: 20px;">
+                        <div class="cmd" style="font-size: 13px;"><span class="user">lucas@HASIA</span>:<span class="path">~</span><span class="prompt">$ </span>cat .profile/ascii_logo.txt</div>
+                        <div class="ascii-sanghyun" style="font-size: 8px; margin: 15px 0;">██╗  ██╗ █████╗ ███████╗██╗ █████╗ 
+██║  ██║██╔══██╗██╔════╝██║██╔══██╗
+███████║███████║███████╗██║███████║
+██╔══██║██╔══██║╚════██║██║██╔══██║
+██║  ██║██║  ██║███████║██║██║  ██║
+╚═╝  ╚═╝╚═╝  ╚═╝╚══════╝╚═╝╚═╝  ╚═╝</div>
+                    </div>
+                    
+                    <div class="cmd-block" style="margin-bottom: 20px;">
+                        <div class="cmd" style="font-size: 13px;"><span class="user">lucas@HASIA</span>:<span class="path">~</span><span class="prompt">$ </span>finger lucas</div>
+                        <div class="output" style="font-size: 13px; line-height: 1.8;">Login: lucas</div>
+                        <div class="output" style="font-size: 13px; line-height: 1.8;">Name: <span class="name-sanghyun">Sanghyeon Ha (하상현)</span></div>
+                        <div class="output" style="font-size: 13px; line-height: 1.8;">Title: <span class="title-sanghyun">CPO @ HASIA Corporation</span></div>
+                        <div class="output" style="font-size: 13px; line-height: 1.8;">Mail: <span class="contact-sanghyun">lucas@hasia.ai</span></div>
+                        <div class="output" style="font-size: 13px; line-height: 1.8;">Phone: <span class="contact-sanghyun">+82-10-2435-3561</span></div>
+                        <div class="output" style="font-size: 13px; line-height: 1.8;">Web: <span class="contact-sanghyun">https://hasia.ai</span></div>
+                        <div class="output" style="font-size: 13px; line-height: 1.8;">Office: <span class="contact-sanghyun">Wherever WiFi Connects</span></div>
+                    </div>
+                </div>
+                
+                <div class="term-footer" style="font-size: 11px;">
+                    <span class="user">lucas@HASIA</span>:<span class="path">~</span><span class="prompt">$ </span><span class="cursor">_</span>
+                </div>
+            </div>
+            </div>
+            
+            <div>
+                <h4 style="text-align: center; color: #8b949e; margin-bottom: 10px; font-size: 12px;">(뒷면)</h4>
+                <div class="card-with-bleed">
+                <div class="card vertical card-back-terminal-sanghyun">
+                <div class="back-header-sanghyun"></div>
+                
+                <div class="back-main-sanghyun">
+                    <div style="text-align: center; width: 100%; overflow-x: auto;">
+                        <div class="back-code-chef">
+                            <pre style="text-align: left; display: inline-block; font-size: 13px; line-height: 1.8; max-width: 100%; margin: 0 auto;">
+<span class="code-keyword">const</span> <span class="code-class">productPhilosophy</span> = {
+  <span class="code-function">focus</span>: <span class="code-string">"User pain points"</span>,
+  <span class="code-function">method</span>: <span class="code-string">"AI-first approach"</span>,
+  <span class="code-function">speed</span>: <span class="code-string">"Ship daily"</span>,
+  <span class="code-function">belief</span>: <span class="code-string">"Nothing is impossible"</span>
+};
+
+<span class="code-keyword">function</span> <span class="code-function">deliver</span>() {
+  <span class="code-keyword">return</span> <span class="code-success">Promise</span>.<span class="code-function">resolve</span>();
+}</pre>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="back-footer-sanghyun"></div>
+            </div>
+            </div>
+        </div>
+
+        <!-- Card 23 New Vertical - Jungyong Kim COO -->
+        <h3>Jungyong Kim - COO (새 세로형)</h3>
+        <div class="cards-wrapper">
+            <div>
+                <h4 style="text-align: center; color: #8b949e; margin-bottom: 10px; font-size: 12px;">(앞면)</h4>
+                <div class="card-with-bleed">
+                <div class="card vertical card-front-terminal-hybrid" style="font-size: 13px;">
+                <div class="term-header" style="font-size: 12px;">bash - leo@HASIA:~</div>
+                
+                <div class="term-body" style="font-size: 13px; line-height: 1.6; padding: 25px;">
+                    <div class="cmd-block" style="margin-bottom: 20px;">
+                        <div class="cmd" style="font-size: 13px;"><span class="user">leo@HASIA</span>:<span class="path">~</span><span class="prompt">$ </span>cat .profile/ascii_logo.txt</div>
+                        <div class="ascii-accurate" style="font-size: 8px; margin: 15px 0;">██╗  ██╗ █████╗ ███████╗██╗ █████╗ 
+██║  ██║██╔══██╗██╔════╝██║██╔══██╗
+███████║███████║███████╗██║███████║
+██╔══██║██╔══██║╚════██║██║██╔══██║
+██║  ██║██║  ██║███████║██║██║  ██║
+╚═╝  ╚═╝╚═╝  ╚═╝╚══════╝╚═╝╚═╝  ╚═╝</div>
+                    </div>
+                    
+                    <div class="cmd-block" style="margin-bottom: 20px;">
+                        <div class="cmd" style="font-size: 13px;"><span class="user">leo@HASIA</span>:<span class="path">~</span><span class="prompt">$ </span>finger leo</div>
+                        <div class="output" style="font-size: 13px; line-height: 1.8;">Login: leo</div>
+                        <div class="output" style="font-size: 13px; line-height: 1.8;">Name: <span class="name-hybrid">Jungyong Kim (김정용)</span></div>
+                        <div class="output" style="font-size: 13px; line-height: 1.8;">Title: <span class="title-hybrid">COO @ HASIA Corporation</span></div>
+                        <div class="output" style="font-size: 13px; line-height: 1.8;">Mail: <span class="contact-hybrid">leo@hasia.ai</span></div>
+                        <div class="output" style="font-size: 13px; line-height: 1.8;">Phone: <span class="contact-hybrid">+82-10-5630-3398</span></div>
+                        <div class="output" style="font-size: 13px; line-height: 1.8;">Web: <span class="contact-hybrid">https://hasia.ai</span></div>
+                        <div class="output" style="font-size: 13px; line-height: 1.8;">Office: <span class="contact-hybrid">Wherever WiFi Connects</span></div>
+                    </div>
+                </div>
+                
+                <div class="term-footer" style="font-size: 11px;">
+                    <span class="user">leo@HASIA</span>:<span class="path">~</span><span class="prompt">$ </span><span class="cursor">_</span>
+                </div>
+            </div>
+            </div>
+            </div>
+            
+            <div>
+                <h4 style="text-align: center; color: #8b949e; margin-bottom: 10px; font-size: 12px;">(뒷면)</h4>
+                <div class="card-with-bleed">
+                <div class="card vertical card-back-terminal-hybrid">
+                <div class="back-header-hybrid"></div>
+                
+                <div class="back-main-hybrid">
+                    <div style="text-align: center; width: 100%; overflow-x: auto;">
+                        <div class="back-code-colorful">
+                            <pre style="text-align: left; display: inline-block; font-size: 13px; line-height: 1.8; max-width: 100%; margin: 0 auto;">
+<span class="code-keyword">class</span> <span class="code-class">Operations</span> {
+  <span class="code-function">constructor</span>() {
+    <span class="code-keyword">this</span>.expertise = [
+      <span class="code-string">"Corporate Law (13y+)"</span>,
+      <span class="code-string">"Strategic Leadership"</span>,
+      <span class="code-string">"Business Architecture"</span>
+    ];
+  }
+  
+  <span class="code-function">execute</span>() {
+    <span class="code-keyword">return</span> <span class="code-string">"Legal → Strategy → Scale"</span>;
+  }
+}</pre>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="back-footer-hybrid"></div>
+            </div>
+            </div>
+            </div>
+        </div>
+
+    </div>
+</body>
+</html>
