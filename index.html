@@ -48,9 +48,42 @@
         /* 재단 여백이 있는 카드 래퍼 */
         .card-with-bleed {
             padding: 30px;
-            background: #808080; /* 회색으로 변경 */
-            border-radius: 15px;
             display: inline-block;
+            position: relative;
+            background: transparent;
+        }
+
+        /* 헤더 여백 확장 */
+        .bleed-header {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 60px;
+            background: #161b22;
+            z-index: 1;
+        }
+
+        /* 본문 여백 확장 */
+        .bleed-body {
+            position: absolute;
+            top: 60px;
+            left: 0;
+            right: 0;
+            bottom: 60px;
+            background: #0d1117;
+            z-index: 1;
+        }
+
+        /* 푸터 여백 확장 */
+        .bleed-footer {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 60px;
+            background: #161b22;
+            z-index: 1;
         }
 
         /* 카드 기본 스타일 */
@@ -60,6 +93,8 @@
             border-radius: 12px;
             display: flex;
             flex-direction: column;
+            position: relative;
+            z-index: 2;
         }
 
         /* Terminal 스타일 카드 */
@@ -235,6 +270,9 @@
             <div class="cards-row">
                 <!-- 앞면 -->
                 <div class="card-with-bleed">
+                    <div class="bleed-header"></div>
+                    <div class="bleed-body"></div>
+                    <div class="bleed-footer"></div>
                     <div class="card card-terminal">
                         <div class="term-header">bash - hyeman@HASIA:~</div>
                         <div class="term-body">
@@ -266,6 +304,9 @@
 
                 <!-- 뒷면 -->
                 <div class="card-with-bleed">
+                    <div class="bleed-header"></div>
+                    <div class="bleed-body"></div>
+                    <div class="bleed-footer"></div>
                     <div class="card card-terminal">
                         <div class="back-header"></div>
                         <div class="back-main">
@@ -294,6 +335,9 @@
             <div class="cards-row">
                 <!-- 앞면 -->
                 <div class="card-with-bleed">
+                    <div class="bleed-header"></div>
+                    <div class="bleed-body"></div>
+                    <div class="bleed-footer"></div>
                     <div class="card card-terminal">
                         <div class="term-header">bash - lucas@HASIA:~</div>
                         <div class="term-body">
@@ -325,6 +369,9 @@
 
                 <!-- 뒷면 -->
                 <div class="card-with-bleed">
+                    <div class="bleed-header"></div>
+                    <div class="bleed-body"></div>
+                    <div class="bleed-footer"></div>
                     <div class="card card-terminal">
                         <div class="back-header"></div>
                         <div class="back-main">
@@ -352,6 +399,9 @@
             <div class="cards-row">
                 <!-- 앞면 -->
                 <div class="card-with-bleed">
+                    <div class="bleed-header"></div>
+                    <div class="bleed-body"></div>
+                    <div class="bleed-footer"></div>
                     <div class="card card-terminal">
                         <div class="term-header">bash - leo@HASIA:~</div>
                         <div class="term-body">
@@ -383,6 +433,9 @@
 
                 <!-- 뒷면 -->
                 <div class="card-with-bleed">
+                    <div class="bleed-header"></div>
+                    <div class="bleed-body"></div>
+                    <div class="bleed-footer"></div>
                     <div class="card card-terminal">
                         <div class="back-header"></div>
                         <div class="back-main">
