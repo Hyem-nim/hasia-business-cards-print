@@ -52,6 +52,21 @@
             position: relative;
             background: #0d1117;
         }
+        
+        /* 뒷면 카드용 래퍼 - 본문색으로 통일 */
+        .card-with-bleed.back-card {
+            background: #0d1117;
+        }
+        
+        .card-with-bleed.back-card .bleed-header,
+        .card-with-bleed.back-card .bleed-footer {
+            background: #0d1117;
+        }
+        
+        .card-with-bleed.back-card .bleed-divider-top,
+        .card-with-bleed.back-card .bleed-divider-bottom {
+            display: none;
+        }
 
         /* 헤더 여백 확장 - 카드 헤더와 정확히 맞춤 */
         .bleed-header {
@@ -329,7 +344,7 @@
                 </div>
 
                 <!-- 뒷면 -->
-                <div class="card-with-bleed">
+                <div class="card-with-bleed back-card">
                     <div class="bleed-header"></div>
                     <div class="bleed-divider-top"></div>
                     <div class="bleed-body"></div>
@@ -398,7 +413,7 @@
                 </div>
 
                 <!-- 뒷면 -->
-                <div class="card-with-bleed">
+                <div class="card-with-bleed back-card">
                     <div class="bleed-header"></div>
                     <div class="bleed-divider-top"></div>
                     <div class="bleed-body"></div>
@@ -466,7 +481,7 @@
                 </div>
 
                 <!-- 뒷면 -->
-                <div class="card-with-bleed">
+                <div class="card-with-bleed back-card">
                     <div class="bleed-header"></div>
                     <div class="bleed-divider-top"></div>
                     <div class="bleed-body"></div>
